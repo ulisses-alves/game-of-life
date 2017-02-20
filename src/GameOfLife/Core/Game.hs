@@ -4,14 +4,16 @@ module GameOfLife.Core.Game
 , create
 ) where
 
-import Numeric.Natural (Natural(..))
+import Numeric.Natural
+import qualified System.Random as Random
+import GameOfLife.Util.List (splitEvery)
+import GameOfLife.Core.Cell (Cell(..))
 
 data Options = Options {
   height :: Natural
 , width :: Natural
+, gen :: Random.StdGen
 } deriving (Show)
-
-data Cell = Dead | Alive deriving (Show)
 
 data Game = Game {
   grid :: [[Cell]]
@@ -19,6 +21,7 @@ data Game = Game {
 } deriving (Show)
 
 create :: Options -> Game
-create Options {height=h, width=w} = Game {grid=grid, cycles=0}
+create Options {height=h, width=w, gen=g} = Game {grid=grid, cycles=0}
   where
-    grid = replicate (fromIntegral h) . replicate (fromIntegral w) $ Dead
+    grid = take (fromIntegral h) . splitEvery w $ cells
+    cells = Random.randoms g

@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import qualified GameOfLife.Cli.Client as Client
 
 main :: IO ()
-main = someFunc
+main = Client.main

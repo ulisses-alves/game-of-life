@@ -2,13 +2,19 @@ module GameOfLife.Cli.Client
 ( main
 ) where
 
-import qualified System.Random as Random
+import System.Console.ANSI
 import qualified GameOfLife.Core.Game as Game
-import qualified GameOfLife.Core.Options as Opt
+
+type Canvas = (Int, Int)
 
 main :: IO ()
-main = do
-    stdGen <- Random.getStdGen
-    let game = Game.create Opt.Options {Opt.height = 10, Opt.width = 5, Opt.gen = stdGen}
-    mapM_ print game
-    return ()
+main = draw (10,10) . Game.next . Game.next $ blinker
+
+draw :: Canvas -> [Game.Cell] -> IO ()
+draw (height, width) cells = mapM_ putStrLn rows
+  where
+    rows = map cols [0..height]
+    cols row = map (\x -> drawCell (x,row)) [0..width]
+    drawCell cell = if cell `elem` cells then 'O' else '-'
+
+blinker = [(1,0), (1,1), (1,2)]

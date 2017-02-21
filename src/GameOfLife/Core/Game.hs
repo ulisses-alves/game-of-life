@@ -1,18 +1,17 @@
 module GameOfLife.Core.Game
-( Game
-, create
+( Cell
+, next
 ) where
 
-import Numeric.Natural
-import qualified System.Random as Rnd
-import qualified GameOfLife.Core.Options as Opt;
-import qualified GameOfLife.Util.List as List
-import GameOfLife.Core.Cell (Cell(..))
+import Data.List
 
-type Game = [[Cell]]
+type Cell = (Int, Int)
 
-create :: Opt.Options -> Game
-create Opt.Options {Opt.height=h, Opt.width=w, Opt.gen=g} = grid
+next :: [Cell] -> [Cell]
+next cells = map head . filter viable . grouped $ cells
   where
-    grid = take (fromIntegral h) . List.splitEvery w $ cells
-    cells = Rnd.randoms g
+    viable [_,_,_] = True
+    viable [c,_] = c `elem` cells
+    viable _ = False
+    grouped = group . sort . concatMap neighboars
+    neighboars (x,y) = [ (x+x', y+y') | x' <- [-1..1], y' <- [-1..1], (x',y') /= (0,0) ]

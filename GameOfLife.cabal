@@ -16,9 +16,7 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     GameOfLife.Cli.Client
-                     , GameOfLife.Core.Cell
                      , GameOfLife.Core.Game
-                     , GameOfLife.Core.Options
                      , GameOfLife.Util.List
   build-depends:       base >= 4.7 && < 5
                      , random >= 1.1

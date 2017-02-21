@@ -1,27 +1,18 @@
 module GameOfLife.Core.Game
-( Options(..)
-, Game(..)
+( Game
 , create
 ) where
 
 import Numeric.Natural
-import qualified System.Random as Random
-import GameOfLife.Util.List (splitEvery)
+import qualified System.Random as Rnd
+import qualified GameOfLife.Core.Options as Opt;
+import qualified GameOfLife.Util.List as List
 import GameOfLife.Core.Cell (Cell(..))
 
-data Options = Options {
-  height :: Natural
-, width :: Natural
-, gen :: Random.StdGen
-} deriving (Show)
+type Game = [[Cell]]
 
-data Game = Game {
-  grid :: [[Cell]]
-, cycles :: Natural
-} deriving (Show)
-
-create :: Options -> Game
-create Options {height=h, width=w, gen=g} = Game {grid=grid, cycles=0}
+create :: Opt.Options -> Game
+create Opt.Options {Opt.height=h, Opt.width=w, Opt.gen=g} = grid
   where
-    grid = take (fromIntegral h) . splitEvery w $ cells
-    cells = Random.randoms g
+    grid = take (fromIntegral h) . List.splitEvery w $ cells
+    cells = Rnd.randoms g

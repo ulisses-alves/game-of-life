@@ -3,12 +3,12 @@ module GameOfLife.Cli.Client
 ) where
 
 import qualified System.Random as Random
-import GameOfLife.Core.Game (Game(..), Options(..), create)
+import qualified GameOfLife.Core.Game as Game
+import qualified GameOfLife.Core.Options as Opt
 
 main :: IO ()
 main = do
     stdGen <- Random.getStdGen
-    let Game {grid = g, cycles = c} = create Options {height = 10, width = 5, gen = stdGen}
-    print c
-    mapM_ print g
+    let game = Game.create Opt.Options {Opt.height = 10, Opt.width = 5, Opt.gen = stdGen}
+    mapM_ print game
     return ()

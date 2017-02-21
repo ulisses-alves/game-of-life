@@ -11,4 +11,3 @@ instance Random Cell where
     randomR (a, b) g = (toEnum r, g')
       where
         (r, g') = randomR (fromEnum a, fromEnum b) g
-

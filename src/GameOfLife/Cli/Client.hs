@@ -4,20 +4,21 @@ module GameOfLife.Cli.Client
 
 import Control.Concurrent
 import Control.Monad
+import System.Environment
 import qualified System.Console.ANSI as Console
 import qualified GameOfLife.Cli.Drawing as Drawing
 import qualified GameOfLife.Core.Game as Game
+import qualified GameOfLife.Core.Patterns as Patterns
 
 main :: IO ()
-main = refresh . Game.next $ blinker
+main = do
+    args <- getArgs
+    refresh . Game.next . Patterns.get . head $ args
   where
     refresh previousGame = do
         Console.clearScreen
-        Drawing.draw (10,10) game
+        Drawing.draw (40,40) game
         threadDelay 500000
         refresh game
       where
         game = Game.next previousGame
-
-blinker = [(1,0), (1,1), (1,2)]
-toad = [(3,0), (1,0), (0,1), (3,1), (0,2), (3,2), (1,3)]

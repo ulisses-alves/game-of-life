@@ -18,6 +18,7 @@ library
   exposed-modules:     GameOfLife.Cli.Client
                      , GameOfLife.Cli.Drawing
                      , GameOfLife.Core.Game
+                     , GameOfLife.Core.Patterns
                      , GameOfLife.Util.List
   build-depends:       base >= 4.7 && < 5
                      , random >= 1.1

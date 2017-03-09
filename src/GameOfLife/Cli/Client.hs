@@ -20,7 +20,7 @@ main = do
     begin height width pattern = render height width . Patterns.get $ pattern
     render height width previousGame = do
         Console.clearScreen
-        Drawing.draw (height-2,width-1) game
+        Drawing.draw (height-2,width-2) game
         threadDelay 500000
         render height width game
       where

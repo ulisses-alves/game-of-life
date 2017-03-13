@@ -15,13 +15,15 @@ main :: IO ()
 main = do
     args <- getArgs
     termSize <- TS.size
-    let Just TS.Window {TS.height=h, TS.width=w} = termSize in begin h w . head $ args
+    case termSize of
+        Nothing -> putStrLn "Failed to get terminal size"
+        Just TS.Window {TS.height=h, TS.width=w} -> startGame (h,w) . head $ args
+
+startGame :: (Int, Int) -> String -> IO ()
+startGame (height, width) pattern = renderRec . Patterns.get $ pattern
   where
-    begin height width pattern = render height width . Patterns.get $ pattern
-    render height width previousGame = do
+    renderRec cells = do
         Console.clearScreen
-        Drawing.draw (height-2,width-2) game
-        threadDelay 500000
-        render height width game
-      where
-        game = Game.next previousGame
+        Drawing.draw (height-2, width-2) cells
+        threadDelay 300000
+        renderRec . Game.next $ cells
